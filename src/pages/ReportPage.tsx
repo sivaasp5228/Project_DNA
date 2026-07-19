@@ -85,8 +85,197 @@ export const ReportPage: React.FC = () => {
   ];
 
   const handleExport = () => {
-    toast.success('Report Exported', {
-      description: `"${evaluation.title}" analysis report has been saved to PDF.`
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      toast.error('Pop-up blocked', {
+        description: 'Please allow pop-ups to export the PDF report.'
+      });
+      return;
+    }
+
+    const techStackBadges = evaluation.techStack
+      .map(tech => `<span style="display:inline-block;background:#f4f4f5;border:1px solid #e4e4e7;color:#3f3f46;font-size:10px;font-weight:600;padding:2px 6px;margin:2px;border-radius:4px;">${tech}</span>`)
+      .join('');
+
+    const criteriaRows = [
+      { name: 'Problem Clarity', score: evaluation.metrics.problemClarity, desc: 'Measures how well the target audience and problem statements are mapped out.' },
+      { name: 'Innovation', score: evaluation.metrics.innovation, desc: 'Assesses the novelty of the solution and contemporary technical implementation.' },
+      { name: 'Technical Quality', score: evaluation.metrics.technicalQuality, desc: 'Reviews code structure, framework bindings, and repository architecture.' },
+      { name: 'Documentation', score: evaluation.metrics.documentation, desc: 'Scores setup clarity, README structure, and architectural explanation.' },
+      { name: 'Scalability', score: evaluation.metrics.scalability, desc: 'Measures structural capacity to sustain concurrency and resource loading.' },
+      { name: 'Impact / Architecture', score: evaluation.metrics.impact, desc: 'Assesses product-market relevance and real-world value creation.' },
+      { name: 'Presentation', score: evaluation.metrics.presentation, desc: 'Evaluates slides structure and project layout visual quality.' },
+      { name: 'Industry Readiness', score: evaluation.metrics.industryReadiness, desc: 'Scores security postures, test matrices, and deployment status.' }
+    ].map(crit => `
+      <div style="border-bottom:1px solid #e4e4e7;padding:10px 0;display:flex;justify-content:space-between;align-items:center;">
+        <div style="max-width:80%;text-align:left;">
+          <strong style="font-size:13px;color:#18181b;display:block;">${crit.name}</strong>
+          <span style="margin:2px 0 0;font-size:11px;color:#71717a;line-height:1.4;display:block;">${crit.desc}</span>
+        </div>
+        <div style="font-size:16px;font-weight:bold;color:#2563eb;background:#eff6ff;padding:4px 10px;border-radius:6px;min-width:32px;text-align:center;">${crit.score}</div>
+      </div>
+    `).join('');
+
+    const strengthsList = evaluation.strengths.map(s => `<li>${s}</li>`).join('');
+    const weaknessesList = evaluation.weaknesses.map(w => `<li>${w}</li>`).join('');
+    const recommendationsList = evaluation.recommendations.map(r => `<li>${r}</li>`).join('');
+
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>ProjectDNA Evaluation Report - ${evaluation.title}</title>
+        <meta charset="utf-8">
+        <style>
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #18181b;
+            line-height: 1.5;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+          }
+          h1, h2, h3 {
+            color: #09090b;
+            margin-top: 0;
+          }
+          .header {
+            border-bottom: 2px solid #e4e4e7;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+          }
+          .score-badge {
+            text-align: center;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+            padding: 15px 25px;
+            border-radius: 12px;
+            min-width: 100px;
+          }
+          .section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+          }
+          .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #71717a;
+            border-bottom: 1px solid #e4e4e7;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            text-align: left;
+          }
+          ul {
+            margin: 0;
+            padding-left: 20px;
+            text-align: left;
+          }
+          li {
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #27272a;
+          }
+          .metadata-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+          }
+          .metadata-table td {
+            padding: 8px 0;
+            font-size: 13px;
+            border-bottom: 1px dashed #e4e4e7;
+            text-align: left;
+          }
+          .metadata-table td.label {
+            font-weight: 600;
+            color: #71717a;
+            width: 150px;
+          }
+          @media print {
+            body {
+              padding: 0;
+            }
+            .no-print {
+              display: none;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div style="text-align:left;">
+            <span style="font-size:11px;font-weight:bold;color:#3b82f6;text-transform:uppercase;letter-spacing:0.1em;display:block;">ProjectDNA AI Evaluation</span>
+            <h1 style="font-size:28px;margin:5px 0 10px;font-weight:800;letter-spacing:-0.02em;">${evaluation.title}</h1>
+            <div style="margin-bottom: 10px;">${techStackBadges}</div>
+            <p style="margin:0;font-size:12px;color:#71717a;">Generated on: ${new Date(evaluation.createdAt).toLocaleDateString()}</p>
+          </div>
+          <div class="score-badge">
+            <div style="font-size:36px;font-weight:900;line-height:1;">${evaluation.score}%</div>
+            <div style="font-size:11px;font-weight:bold;margin-top:4px;text-transform:uppercase;letter-spacing:0.05em;">Grade ${getLetterGrade(evaluation.score)}</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Project Metadata</div>
+          <table class="metadata-table">
+            <tr>
+              <td class="label">Problem Statement</td>
+              <td>${evaluation.problemStatement}</td>
+            </tr>
+            <tr>
+              <td class="label">Description</td>
+              <td>${evaluation.description}</td>
+            </tr>
+            ${evaluation.githubUrl ? `<tr><td class="label">GitHub Repository</td><td><a href="${evaluation.githubUrl}" style="color:#2563eb;text-decoration:none;">${evaluation.githubUrl}</a></td></tr>` : ''}
+            ${evaluation.deploymentUrl ? `<tr><td class="label">Live Deployment</td><td><a href="${evaluation.deploymentUrl}" style="color:#2563eb;text-decoration:none;">${evaluation.deploymentUrl}</a></td></tr>` : ''}
+          </table>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Scoring Breakdown</div>
+          ${criteriaRows}
+        </div>
+
+        <div class="section" style="page-break-before: always;">
+          <div class="section-title">Detailed Insights</div>
+          
+          <div style="margin-bottom:25px;">
+            <h3 style="font-size:14px;color:#10b981;margin-bottom:8px;text-align:left;">🔥 Key Strengths</h3>
+            <ul>${strengthsList}</ul>
+          </div>
+
+          <div style="margin-bottom:25px;">
+            <h3 style="font-size:14px;color:#ef4444;margin-bottom:8px;text-align:left;">⚠️ Areas of Concern</h3>
+            <ul>${weaknessesList}</ul>
+          </div>
+
+          <div>
+            <h3 style="font-size:14px;color:#3b82f6;margin-bottom:8px;text-align:left;">💡 Actionable Recommendations</h3>
+            <ul>${recommendationsList}</ul>
+          </div>
+        </div>
+
+        <script>
+          window.onload = function() {
+            setTimeout(function() {
+              window.print();
+            }, 500);
+          };
+        </script>
+      </body>
+      </html>
+    `;
+
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+    toast.success('Generating export...', {
+      description: 'The export print dialog has been launched.'
     });
   };
 

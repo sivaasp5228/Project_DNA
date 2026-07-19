@@ -13,7 +13,9 @@ export const reportService = {
     if (!data) return [];
 
     return data.map((evalItem: any) => {
-      const report = evalItem.reports?.[0] || {};
+      const report = Array.isArray(evalItem.reports)
+        ? (evalItem.reports[0] || {})
+        : (evalItem.reports || {});
       return {
         id: evalItem.id,
         title: evalItem.title,
@@ -54,7 +56,9 @@ export const reportService = {
     if (error) throw error;
     if (!data) return null;
 
-    const report = data.reports?.[0] || {};
+    const report = Array.isArray(data.reports)
+      ? (data.reports[0] || {})
+      : (data.reports || {});
     return {
       id: data.id,
       title: data.title,
