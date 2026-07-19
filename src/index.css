@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --color-zinc-950: var(--bg-app);
+  --color-zinc-900: var(--bg-card);
+  --color-zinc-850: var(--border-card);
+  --color-zinc-800: var(--border-card);
+  --color-zinc-100: var(--text-main);
+  --color-zinc-200: var(--text-main);
+  --color-zinc-300: var(--text-main-bright);
+  --color-zinc-400: var(--text-muted);
+  --color-zinc-500: var(--text-muted);
+  --color-zinc-550: var(--text-muted-dark);
+}
+
+:root {
+  --bg-app: #030303;
+  --bg-card: #09090b;
+  --border-card: #18181b;
+  --text-main: #e4e4e7;
+  --text-main-bright: #fafafa;
+  --text-muted: #a1a1aa;
+  --text-muted-dark: #71717a;
+  color-scheme: dark;
+}
+
+:root:not(.dark) {
+  --bg-app: #f4f4f5;
+  --bg-card: #ffffff;
+  --border-card: #e4e4e7;
+  --text-main: #27272a;
+  --text-main-bright: #09090b;
+  --text-muted: #71717a;
+  --text-muted-dark: #a1a1aa;
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-main-bright);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-card);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Custom styles for animations & grids */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s infinite ease-in-out;
+}
