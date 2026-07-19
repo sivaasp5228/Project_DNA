@@ -22,7 +22,6 @@
 - [Environment Variables](#-environment-variables)
 - [Getting Started](#-getting-started)
 - [Future Enhancements](#-future-enhancements)
-- [License](#-license)
 
 ---
 
@@ -208,7 +207,3 @@ npm run build
 - **Faculty Dashboard**: Enable course evaluators to view class-wide project quality analytics.
 
 ---
-
-## 📄 License
-
-Distributed under the **MIT License**. See `LICENSE` for more information.
