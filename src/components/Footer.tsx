@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
               Analyze your project DNA. Elevate product quality, optimize codebases, and demonstrate industry readiness with automated AI evaluations.
             </p>
             <div className="flex items-center gap-3.5 mt-2">
-              <a href="#" className="text-zinc-500 hover:text-zinc-300 transition-colors">
+              <a href="https://github.com/sivaasp5228/Project_DNA.git" className="text-zinc-500 hover:text-zinc-300 transition-colors">
                 <Github className="h-4 w-4" />
               </a>
               <a href="#" className="text-zinc-500 hover:text-zinc-300 transition-colors">
@@ -37,7 +37,7 @@ export const Footer: React.FC = () => {
             <ul className="flex flex-col gap-2">
               <li><a href="#features" className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors">Features</a></li>
               <li><a href="#how-it-works" className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors">How it works</a></li>
-              <li><a href="#" className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors">Pricing</a></li>
+              <li><a href="#testimonials" className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors">Testimonials</a></li>
             </ul>
           </div>
 
@@ -54,10 +54,10 @@ export const Footer: React.FC = () => {
 
         <div className="border-t border-zinc-900 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <span className="text-xs text-zinc-600">
-            © {new Date().getFullYear()} ProjectDNA AI. All rights reserved.
+            ©  ProjectDNA AI developed for Idea 2 Impact Hackathon {new Date().getFullYear()}
           </span>
           <span className="text-xs text-zinc-650">
-            Designed for premium engineering teams.
+            Designed by Sivaa SP.
           </span>
         </div>
       </div>

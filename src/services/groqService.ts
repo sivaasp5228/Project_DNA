@@ -66,6 +66,13 @@ Dimensions to assess:
 7. Presentation: Review the project narrative and pitch quality.
 8. Industry Readiness: Security checks, test coverage posture, and live deployment stability.
 
+CRITICAL EVALUATION CONSTRAINTS:
+- Evaluate the project SOLELY on the uploaded/provided materials. Do not assume or hallucinate features, structures, or details that are not explicitly documented.
+- If no README file content is provided, you MUST score the Documentation dimension as 0 (on a scale of 0-10).
+- If no presentation file content/summary is provided, you MUST score the Presentation dimension as 0 (on a scale of 0-10).
+- If no GitHub repository URL is provided, you cannot review the codebase. The Technical Quality and Architecture scores MUST be penalised significantly (maximum score of 3 out of 10) because code implementation and structure details cannot be inspected.
+- The overallScore should be the average of the 8 dimension scores multiplied by 10 (rounded to the nearest integer).
+
 You MUST respond with a single, valid JSON object containing exactly the schema structure outlined below.
 DO NOT wrap the JSON in markdown code blocks (\`\`\`json), do not write any introductory or concluding comments, and do not explain the formatting. Return ONLY raw JSON.
 

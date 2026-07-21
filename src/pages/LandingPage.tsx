@@ -65,7 +65,7 @@ export const LandingPage: React.FC = () => {
     },
     {
       step: '03',
-      title: 'Access SaaS Analytics',
+      title: 'Access Analytics Reports',
       description: 'Review your interactive radar charts, detailed scorecards, and a roadmap of weaknesses and fixes.'
     }
   ];
@@ -103,12 +103,12 @@ export const LandingPage: React.FC = () => {
           {/* Tagline Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-600/10 border border-blue-500/20 rounded-full mb-6">
             <Sparkles className="h-3.5 w-3.5 text-blue-500" />
-            <span className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">SaaS Project Evaluator</span>
+            <span className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Project Evaluator for Students</span>
           </div>
 
           {/* Headline */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-zinc-100 tracking-tight max-w-3xl leading-[1.1] mb-6">
-            Understand Your Project's <span className="text-blue-500">True Technical DNA</span>
+            Understand Your Project's <span className="text-blue-500">Technical DNA</span>
           </h1>
 
           {/* Subtext */}
@@ -160,7 +160,7 @@ export const LandingPage: React.FC = () => {
                 </div>
                 <div className="flex justify-between items-center text-[10px] text-zinc-400">
                   <span>Overall Quality:</span>
-                  <span className="font-bold text-blue-500">89%</span>
+                  <span className="font-bold text-blue-500">90%</span>
                 </div>
               </div>
 
@@ -169,7 +169,7 @@ export const LandingPage: React.FC = () => {
                 <div className="bg-zinc-950/50 border border-zinc-850 rounded-xl p-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[10px] font-bold text-zinc-200">Technical Quality</span>
-                    <span className="text-[10px] font-bold text-blue-500">92/100</span>
+                    <span className="text-[10px] font-bold text-blue-500">90/100</span>
                   </div>
                   <div className="h-1 bg-zinc-900 rounded-full overflow-hidden">
                     <div className="h-full w-[92%] bg-blue-500" />
@@ -180,7 +180,7 @@ export const LandingPage: React.FC = () => {
                 <div className="bg-zinc-950/50 border border-zinc-850 rounded-xl p-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[10px] font-bold text-zinc-200">Documentation Metrics</span>
-                    <span className="text-[10px] font-bold text-zinc-400">78/100</span>
+                    <span className="text-[10px] font-bold text-zinc-400">70/100</span>
                   </div>
                   <div className="h-1 bg-zinc-900 rounded-full overflow-hidden">
                     <div className="h-full w-[78%] bg-zinc-400" />

@@ -63,7 +63,34 @@ export const evaluationService = {
       }
     }
 
-    // 3. Write evaluation to public.evaluations table
+    // 3. Map Groq scores (scale 1-10) to UI metrics (scale 1-100) and override if assets are missing
+    const metrics: EvaluationMetrics = {
+      problemClarity: Math.min(100, groqResponse.scores.problemClarity * 10),
+      innovation: Math.min(100, groqResponse.scores.innovation * 10),
+      technicalQuality: Math.min(100, groqResponse.scores.technical * 10),
+      documentation: input.readmeFile ? Math.min(100, groqResponse.scores.documentation * 10) : 0,
+      scalability: Math.min(100, groqResponse.scores.scalability * 10),
+      impact: Math.min(100, groqResponse.scores.architecture * 10),
+      presentation: input.pptFile ? Math.min(100, groqResponse.scores.presentation * 10) : 0,
+      industryReadiness: Math.min(100, groqResponse.scores.industryReadiness * 10)
+    };
+
+    // Calculate dynamic overall score as average of the 8 metrics
+    const metricScores = [
+      metrics.problemClarity,
+      metrics.innovation,
+      metrics.technicalQuality,
+      metrics.documentation,
+      metrics.scalability,
+      metrics.impact,
+      metrics.presentation,
+      metrics.industryReadiness
+    ];
+    const calculatedOverallScore = Math.round(
+      metricScores.reduce((sum, s) => sum + s, 0) / metricScores.length
+    );
+
+    // 4. Write evaluation to public.evaluations table
     const { data: evalData, error: evalError } = await supabase
       .from('evaluations')
       .insert({
@@ -76,25 +103,12 @@ export const evaluationService = {
         deployment_url: input.deploymentUrl || null,
         readme_name: input.readmeFile?.name || null,
         ppt_name: input.pptFile?.name || null,
-        score: groqResponse.overallScore
+        score: calculatedOverallScore
       })
       .select()
       .single();
 
     if (evalError) throw evalError;
-
-    // 4. Map Groq scores (scale 1-10) to UI metrics (scale 1-100)
-    // We map 'architecture' to 'impact' to reconcile the 8-dimensions of client with Groq prompts
-    const metrics: EvaluationMetrics = {
-      problemClarity: Math.min(100, groqResponse.scores.problemClarity * 10),
-      innovation: Math.min(100, groqResponse.scores.innovation * 10),
-      technicalQuality: Math.min(100, groqResponse.scores.technical * 10),
-      documentation: Math.min(100, groqResponse.scores.documentation * 10),
-      scalability: Math.min(100, groqResponse.scores.scalability * 10),
-      impact: Math.min(100, groqResponse.scores.architecture * 10),
-      presentation: Math.min(100, groqResponse.scores.presentation * 10),
-      industryReadiness: Math.min(100, groqResponse.scores.industryReadiness * 10)
-    };
 
     // 5. Write report to public.reports table
     const { error: reportError } = await supabase
